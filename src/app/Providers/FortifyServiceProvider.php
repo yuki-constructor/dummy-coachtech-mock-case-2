@@ -14,7 +14,6 @@ use Illuminate\Support\Str;
 use Laravel\Fortify\Fortify;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\ValidationException;
 use App\Models\Admin;
 use App\Models\Employee;
 
@@ -50,11 +49,7 @@ class FortifyServiceProvider extends ServiceProvider
         });
 
 
-        // ビューの分離（viewPrefixの引数に関数を渡すのは正しくない）
-        // Fortify::viewPrefix(function () {
-        //     return request()->is('admin/*') ? 'auth.admin.' : 'auth.employee.';
-        // });
-
+        // ビューの分離
         // 従業員用
         Fortify::viewPrefix('auth.employee.');
         // 管理者用

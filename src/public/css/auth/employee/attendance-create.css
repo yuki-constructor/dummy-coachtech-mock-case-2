@@ -12,8 +12,6 @@
     width: 100%;
     text-align: center;
     margin-top: 20vh;
-    /* place-content: center; */
-    /* justify-content: center; */
 }
 
 .work-status {
@@ -92,12 +90,5 @@
     .container-wrap {
         grid-template-columns: 0.5fr 2fr 0.5fr;
     }
-
-    .form-group__submit-btn {
-        /* padding: 10px; */
-    }
 }
 
-/* PC: 1400px～1540px */
-@media screen and (min-width: 1400px) and (max-width: 1540px) {
-}

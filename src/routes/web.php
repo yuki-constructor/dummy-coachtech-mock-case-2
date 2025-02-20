@@ -20,6 +20,16 @@ Route::prefix('employee')->group(function () {
     Route::get('/login', [EmployeeController::class, 'login'])->name('employee.login');
 
     /**
+     *  従業員のログイン認証処理
+     */
+    Route::post('/login', [EmployeeController::class, 'authenticate'])->name('employee.authenticate');
+
+    /**
+     *  従業員のログアウト処理
+     */
+    Route::post('/logout', [EmployeeController::class, 'logout'])->name('employee.logout');
+
+    /**
      * 従業員の登録画面を表示
      */
     Route::get('/register', [EmployeeController::class, 'register'])->name('employee.register');
@@ -47,12 +57,12 @@ Route::prefix('employee')->group(function () {
 
     Route::middleware('auth:employee')->group(function () {
 
-    /**
-     *  従業員の勤怠登録画面を表示（認証必須）
-     */
-    Route::get('/attendance-create/{employeeId}', [EmployeeController::class, 'attendanceCreate'])
-        ->name('employee.attendance.create');
-});
+        /**
+         *  従業員の勤怠登録画面を表示（認証必須）
+         */
+        Route::get('/attendance-create/{employeeId}', [EmployeeController::class, 'attendanceCreate'])
+            ->name('employee.attendance.create');
+    });
 });
 
 

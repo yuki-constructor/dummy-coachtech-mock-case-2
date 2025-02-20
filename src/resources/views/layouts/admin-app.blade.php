@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@yield('title', 'デフォルトタイトル')</title>
     <!-- 共通のCSS -->
-    <link rel="stylesheet" href="{{ asset('css/common.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/admin-app.css') }}">
     <!-- ページごとのCSS -->
     @stack('styles')
 </head>
@@ -23,27 +23,21 @@
                 <nav class="nav">
                     <ul class="nav__ul">
                         <li>
-                            <form action="{{ route('logout') }}" method="POST">
-                                <!-- @csrf -->
-                                <button type="submit" class="nav__attendance">勤怠</button>
-                            </form>
+                            <a class="nav__attendance-list" href="">
+                                勤怠一覧
+                            </a>
                         </li>
                         <li>
-                            <form action="" method="GET">
-                                <!-- @csrf -->
-                                <button type="submit" class="nav__attendance-list">
-                                    勤怠一覧
-                                </button>
-                            </form>
+                            <a class="nav__staff-list">
+                                スタッフ一覧
+                            </a>
                         </li>
                         <li>
-                            <form action="" method="GET">
-                                <!-- @csrf -->
-                                <button type="submit" class="nav__application">申請</button>
-                            </form>
+                            <a class="nav__application-list">申請一覧
+                            </a>
                         </li>
                         <li>
-                            <form action="{{ route('admin.logout') }}" method="POST">
+                            <form action="{{ route('employee.logout') }}" method="POST">
                                 @csrf
                                 <button type="submit" class="nav__logout">ログアウト</button>
                             </form>

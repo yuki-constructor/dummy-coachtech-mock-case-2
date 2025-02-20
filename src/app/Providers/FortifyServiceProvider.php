@@ -18,6 +18,7 @@ use Illuminate\Validation\ValidationException;
 use App\Models\Admin;
 use App\Models\Employee;
 
+
 class FortifyServiceProvider extends ServiceProvider
 {
     /**
@@ -63,31 +64,35 @@ class FortifyServiceProvider extends ServiceProvider
 
 
         // カスタム認証処理(ログイン処理)
-        // Fortify::authenticateUsing(function (Request $request) {
-        //     if ($request->is('admin/*')) {
-        //         $admin = Admin::where('email', $request->email)->first();
-        //         if ($admin && Hash::check($request->password, $admin->password)) {
-        //             Auth::guard('admin')->login($admin);
-        //             return $admin;
-        //         }
-        //     } else {
-        //         $employee = Employee::where('email', $request->email)->first();
+        Fortify::authenticateUsing(function (Request $request) {
+            if ($request->is('admin/*')) {
+                $admin = Admin::where('email', $request->email)->first();
+                if ($admin && Hash::check($request->password, $admin->password)) {
+                    Auth::guard('admin')->login($admin);
+                    return $admin;
+                }
+            } else {
+                $employee = Employee::where('email', $request->email)->first();
 
-        //         if (!$employee || !Hash::check($request->password, $employee->password)) {
-        //             return null;
-        //         }
+                if (!$employee || !Hash::check($request->password, $employee->password)) {
+                    return null;
+                }
 
-        //         // メール認証が完了していない場合
-        //         if (!$employee->hasVerifiedEmail()) {
-        //             session()->flash('status', 'メール認証を完了してください。');
-        //             session()->flash('resend_verification_email', true); // 再送ボタンを表示
-        //             return null;
-        //         }
+                // メール認証が完了していない場合
+                if (!$employee->hasVerifiedEmail()) {
+                    session()->flash('status', 'メール認証を完了してください。');
+                    session()->flash('resend_verification_email', true); // 再送ボタンを表示
+                    return null;
+                }
 
-        //         Auth::guard('employee')->login($employee);
-        //         return $employee;
-        //     }
-        // });
+                Auth::guard('employee')->login($employee);
+                return $employee;
+            }
+        });
+
+
+
+
 
         // ユーザー登録（registerUsingではなく、createUsersUsingが正しい）
         // Fortify::registerUsing(function (Request $request) {

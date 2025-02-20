@@ -1,0 +1,72 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Models\Admin;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\LoginRequest;
+
+
+class AdminController extends Controller
+{
+    /**
+     * ==============================
+     * 管理員ユーザーの認証関連
+     * ==============================
+     */
+
+    /**
+     * 管理者のログイン画面を表示
+     *
+     *  @return \Illuminate\View\View
+     */
+    public function login()
+    {
+        return view('auth.admin.login');
+    }
+
+    /**
+     * 管理者のログイン認証処理
+     *
+     *  @return \Illuminate\Http\RedirectResponse
+     */
+    public function authenticate(LoginRequest $loginRequest)
+    {
+        // 認証情報を取得
+        $credentials = $loginRequest->only('email', 'password');
+
+        // 認証処理
+        if (Auth::guard('admin')->attempt($credentials)) {
+            $loginRequest->session()->regenerate();
+            return redirect()->route('attendance.list');
+        }
+       
+        return to_route('admin.login')->with(['error' => 'ログイン情報が登録されていません。']);
+    }
+
+    /**
+     * 管理者のログアウト処理
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function logout(Request $request)
+    {
+        Auth::guard('admin')->logout();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect()->route('admin.login');
+    }
+
+    /**
+     * 管理者の勤怠リスト画面を表示
+     *
+     * @return \Illuminate\View\View
+     */
+    public function attendanceList()
+    {
+        return view('auth.admin.attendance-list');
+    }
+}

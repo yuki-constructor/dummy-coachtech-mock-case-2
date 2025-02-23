@@ -33,11 +33,12 @@
                             </a>
                         </li>
                         <li>
-                            <a class="nav__application-list">申請一覧
+                            <a class="nav__application-list">
+                                申請一覧
                             </a>
                         </li>
                         <li>
-                            <form action="{{ route('employee.logout') }}" method="POST">
+                            <form action="{{ route('admin.logout') }}" method="POST">
                                 @csrf
                                 <button type="submit" class="nav__logout">ログアウト</button>
                             </form>

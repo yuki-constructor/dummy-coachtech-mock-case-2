@@ -1,9 +1,9 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\AdminController;
-use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
+use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\EmployeeController;
+use Illuminate\Support\Facades\Route;
 
 
 /**
@@ -11,7 +11,6 @@ use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
  * 従業員ユーザーの認証関連
  * ==============================
  */
-
 Route::prefix('employee')->group(function () {
 
     /**
@@ -54,16 +53,55 @@ Route::prefix('employee')->group(function () {
      */
     Route::post('/email/verification-notification/{employeeId}', [EmployeeController::class, 'resend'])
         ->name('verification.resend');
+});
+
+
+
+/**
+ * ==============================
+ * 従業員ユーザーの勤怠関連
+ * ==============================
+ */
+Route::prefix('employee')->group(function () {
 
     Route::middleware('auth:employee')->group(function () {
 
         /**
          *  従業員の勤怠登録画面を表示（認証必須）
          */
-        Route::get('/attendance-create/{employeeId}', [EmployeeController::class, 'attendanceCreate'])
+        // Route::get('/attendance-create/{employeeId}', [AttendanceController::class, 'attendanceCreate'])
+        //     ->name('employee.attendance.create');
+        Route::get('/attendance-create', [AttendanceController::class, 'attendanceCreate'])
             ->name('employee.attendance.create');
+
+        /**
+         *  従業員の勤怠登録（メッセージ）画面を表示（認証必須）
+         */
+        Route::get('/attendance-message', [AttendanceController::class, 'attendanceMessage'])
+            ->name('employee.attendance.message');
+
+        /**
+         *  従業員の出勤登録処理（認証必須）
+         */
+        Route::post('/attendance/clock-in', [AttendanceController::class, 'clockIn'])->name('attendance.clock-in');
+
+        /**
+         *  従業員の休憩開始登録処理（認証必須）
+         */
+        Route::post('/attendance/break-start', [AttendanceController::class, 'breakStart'])->name('attendance.break-start');
+
+        /**
+         *  従業員の休憩終了登録処理（認証必須）
+         */
+        Route::post('/attendance/break-end', [AttendanceController::class, 'breakEnd'])->name('attendance.break-end');
+
+        /**
+         *  従業員の退勤登録処理（認証必須）
+         */
+        Route::post('/attendance/clock-out', [AttendanceController::class, 'clockOut'])->name('attendance.clock-out');
     });
 });
+
 
 
 /**
@@ -71,7 +109,6 @@ Route::prefix('employee')->group(function () {
  * 管理者ユーザーの認証関連
  * ==============================
  */
-
 Route::prefix('admin')->group(function () {
 
     /**

@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\Employee;
-use Illuminate\Support\Facades\Hash;
-use App\Http\Requests\EmployeeRegisterRequest;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Employee;
+use App\Http\Requests\EmployeeRegisterRequest;
+use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\LoginRequest;
+use Illuminate\Http\Request;
 
 class EmployeeController extends Controller
 {
@@ -75,7 +75,8 @@ class EmployeeController extends Controller
         // 認証後、自動でログイン
         Auth::guard('employee')->login($user);
 
-        return redirect()->route('employee.attendance.create', ["employeeId" => $user->id]);
+        // 勤怠登録画（従業員）へリダイレクト
+        return redirect()->route('employee.attendance.create');
     }
 
     /**
@@ -137,7 +138,7 @@ class EmployeeController extends Controller
             $loginRequest->session()->regenerate();
 
             // 勤怠登録画（従業員）へリダイレクト
-            return redirect()->route('employee.attendance.create', ["employeeId" => Auth::guard('employee')->user()->id]);
+            return redirect()->route('employee.attendance.create');
         }
 
         return to_route('employee.login')->with(['error' => 'ログイン情報が登録されていません。']);
@@ -160,17 +161,17 @@ class EmployeeController extends Controller
         return redirect()->route('employee.login');
     }
 
-    /**
-     * 従業員の勤怠登録画面を表示
-     *
-     * @route GET /employee/attendance-create/{employeeId}
-     * @param int $employeeId
-     * @return \Illuminate\View\View
-     */
-    public function attendanceCreate($employeeId)
-    {
-        $employee = Employee::findOrFail($employeeId);
+    // /**
+    //  * 従業員の勤怠登録画面を表示
+    //  *
+    //  * @route GET /employee/attendance-create/{employeeId}
+    //  * @param int $employeeId
+    //  * @return \Illuminate\View\View
+    //  */
+    // public function attendanceCreate($employeeId)
+    // {
+    //     $employee = Employee::findOrFail($employeeId);
 
-        return view('auth.employee.attendance-create', ['employee' => $employee]);
-    }
+    //     return view('auth.employee.attendance-create', ['employee' => $employee]);
+    // }
 }

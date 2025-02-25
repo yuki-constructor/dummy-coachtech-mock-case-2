@@ -31,23 +31,19 @@ class AttendanceController extends Controller
         // 今日の勤怠レコードを取得
         $todayAttendance = Attendance::where('employee_id', $employee->id)
             ->where('date', $today)
-            ->with('status')
             ->first();
-
-        // AttendanceStatusから勤務外のidを取得
-        $status = AttendanceStatus::where('status', '勤務外')->first();
 
         // 今日の勤怠レコードがあり、かつ end_time がセットされている（退勤済み）の場合
         // if (Attendance::where('employee_id', $employee->id)->where('date', $today)->exists())
         // if ($todayAttendance && !is_null($todayAttendance->end_time)) {
-        if ($todayAttendance && ($todayAttendance->attendance_status_id == $status->id)) {
+        if ($todayAttendance && ($todayAttendance->statuses->contains('status', '勤務外'))) {
 
             // return view('attendance.employee.attendance-message')->with('error', '本日はすでに出勤登録と退勤登録が完了しています。');
             return to_route('employee.attendance.message')->with(['message' => '本日はすでに出勤登録と退勤登録が完了しています。']);
         }
 
         // 最新の勤怠レコードを取得（日をまたいで退勤する場合のため、当日制限なし）
-        $attendance = Attendance::where('employee_id', $employee->id)->latest()->with('status')->first();
+        $attendance = Attendance::where('employee_id', $employee->id)->latest()->first();
 
         return view('attendance.employee.attendance-create', compact('attendance'));
     }
@@ -101,19 +97,16 @@ class AttendanceController extends Controller
         //     return redirect()->back()->withErrors('既に勤務中のため、出勤登録できません。');
         // }
 
-        $status = AttendanceStatus::where('status', '勤務中')->first();
-
         // 新しい出勤レコード作成
         $attendance = Attendance::create([
             'employee_id' => $employee->id,
             'date' => $today,
             'start_time' => Carbon::now()->toTimeString(),
-            'attendance_status_id' => $status->id,
         ]);
 
-        // // 勤務中ステータスを付与
-        // $status = AttendanceStatus::where('status', '勤務中')->first();
-        // $attendance->statuses()->sync($status->id);
+        // 勤務中ステータスを付与
+        $status = AttendanceStatus::where('status', '勤務中')->first();
+        $attendance->statuses()->sync($status->id);
 
         // }
         return redirect()->route('employee.attendance.create');
@@ -157,15 +150,10 @@ class AttendanceController extends Controller
 
         // $attendance->statuses()->sync();
 
-        // // ステータスを「休憩中」に更新
-        // $status = AttendanceStatus::where('status', '休憩中')->first();
-        // $attendance->statuses()->sync($status->id);
-
+        // ステータスを「休憩中」に更新
         $status = AttendanceStatus::where('status', '休憩中')->first();
+        $attendance->statuses()->sync($status->id);
 
-        $attendance->update([
-            'attendance_status_id' => $status->id
-        ]);
 
         // }
 
@@ -211,14 +199,8 @@ class AttendanceController extends Controller
         $lastBreak->update(['break_end_time' => Carbon::now()->toTimeString()]);
 
         // ステータスを「勤務中」に戻す
-        // $status = AttendanceStatus::where('status', '勤務中')->first();
-        // $attendance->statuses()->sync($status->id);
-
         $status = AttendanceStatus::where('status', '勤務中')->first();
-
-        $attendance->update([
-            'attendance_status_id' => $status->id
-        ]);
+        $attendance->statuses()->sync($status->id);
 
         return redirect()->route('employee.attendance.create');
 
@@ -247,19 +229,14 @@ class AttendanceController extends Controller
         //     return redirect()->back()->withErrors('勤務中でないため、退勤登録できません。');
         // }
 
-        $status = AttendanceStatus::where('status', '勤務外')->first();
-
-        $attendance->update([
-            'end_time' => Carbon::now()->toTimeString(),
-            'attendance_status_id'  => $status->id,
-        ]);
+        $attendance->update(['end_time' => Carbon::now()->toTimeString()]);
 
         // $status = AttendanceStatus::where('status', '退勤済')->first();
         // $attendance->statuses()->sync($status->id);
 
         // ステータスを「勤務外」に更新
-        // $status = AttendanceStatus::where('status', '勤務外')->first();
-        // $attendance->statuses()->sync($status->id);
+        $status = AttendanceStatus::where('status', '勤務外')->first();
+        $attendance->statuses()->sync($status->id);
 
         // }
         // return view('attendance.employee.attendance-clock-out');

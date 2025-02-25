@@ -3,7 +3,7 @@
 @section('title', '勤怠登録登録画面（一般ユーザー）')
 
 @push('styles')
-    <link rel="stylesheet" href="{{ asset('css/attendance/employee/attendance-clock-out.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/attendance/employee/attendance-message.css') }}">
 @endpush
 
 @section('content')

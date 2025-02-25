@@ -28,7 +28,7 @@
                             </a>
                         </li>
                         <li>
-                            <a class="nav__attendance-list" href="">
+                            <a class="nav__attendance-list" href="{{route('employee.attendance.list')}}">
                                 勤怠一覧
                             </a>
                         </li>

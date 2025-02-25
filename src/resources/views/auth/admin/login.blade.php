@@ -35,7 +35,6 @@
                     </div>
                     <input class="form-group__input" type="text" id="email" name="email" />
                 </div>
-
                 <div class="form-group">
                     <label class="form-group__label" for="password">パスワード</label>
                     <div>

@@ -14,6 +14,11 @@
     margin-top: 20vh;
 }
 
+.error-message {
+    font-weight: bold;
+    color: #f00c0c;
+}
+
 .message {
     font-weight: bold;
     margin: 5px;
@@ -29,7 +34,7 @@
     font-size: clamp(18px, 1.65vw, 25px);
     font-weight: bold;
     padding: 15px 30px;
-    border:solid 1px #000 ;
+    border: solid 1px #000;
     border-radius: 10px;
     cursor: pointer;
     margin-top: 50px;

@@ -1,5 +1,8 @@
+@import url('/css/common.css');
+
+
 /* 共通スタイル */
-body {
+/* body {
     font-family: Arial, sans-serif;
     font-size: clamp(16px, 1.5vw, 23px);
     margin: 0;
@@ -34,7 +37,7 @@ body {
     list-style: none;
     padding: 0;
     margin: 0;
-}
+} */
 
 .nav__attendance,
 .nav__attendance-list,
@@ -56,7 +59,7 @@ body {
     opacity: 0.6;
 }
 
-.nav__logout {
+/* .nav__logout {
     text-decoration: none;
     padding: 5px 15px;
     font-size: clamp(18px, 1.65vw, 25px);
@@ -70,14 +73,14 @@ body {
 
 .nav__logout:hover {
     opacity: 0.6;
-}
+} */
 
 /* レスポンシブ対応 */
 
 /* タブレット: 768px～850px */
-@media (max-width: 850px) and (min-width: 768px) {
+/* @media (max-width: 850px) and (min-width: 768px) { */
     /* ヘッダー */
-    .header-container {
+    /* .header-container {
         grid-template-columns: auto 1fr;
         gap: 10px;
     }
@@ -88,4 +91,4 @@ body {
         text-align: center;
         gap: 10px;
     }
-}
+} */

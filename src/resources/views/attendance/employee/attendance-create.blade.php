@@ -20,7 +20,7 @@
                             出勤
                         </button>
                     </form> --}}
-                @if (!$attendance || $attendance->statuses->contains('status', '勤務外'))
+                @if (!$attendance || $attendance->status->status === '勤務外')
                     <p class="work-status">勤務外</p>
                     <p class="date" id="current-date"></p>
                     <p class="time" id="current-time"></p>
@@ -46,7 +46,7 @@
                             </button>
                         </form>
                     </div> --}}
-                @elseif ($attendance->statuses->contains('status', '勤務中'))
+                @elseif ($attendance->status->status === '勤務中')
                     <p class="work-status">勤務中</p>
                     <p class="date" id="current-date"></p>
                     <p class="time" id="current-time"></p>
@@ -70,7 +70,7 @@
                             休憩戻
                         </button>
                     </form> --}}
-                    @elseif ($attendance->statuses->contains('status', '休憩中'))
+                    @elseif ($attendance->status->status === '休憩中')
                     <p class="work-status">休憩中</p>
                     <p class="date" id="current-date"></p>
                     <p class="time" id="current-time"></p>

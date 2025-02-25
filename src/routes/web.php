@@ -59,7 +59,7 @@ Route::prefix('employee')->group(function () {
 
 /**
  * ==============================
- * 従業員ユーザーの勤怠関連
+ * 従業員ユーザーの勤怠登録関連
  * ==============================
  */
 Route::prefix('employee')->group(function () {
@@ -99,9 +99,34 @@ Route::prefix('employee')->group(function () {
          *  従業員の退勤登録処理（認証必須）
          */
         Route::post('/attendance/clock-out', [AttendanceController::class, 'clockOut'])->name('attendance.clock-out');
+
+         /**
+         *  従業員の勤怠一覧画面を表示（認証必須）
+         */
+        Route::get('/attendance-list', [AttendanceController::class, 'attendanceList'])
+            ->name('employee.attendance.list');
+
+        /**
+         *  従業員の勤怠詳細画面を表示（認証必須）
+         */
+        Route::get('/attendance/{attendanceId}', [AttendanceController::class, 'attendanceShow'])
+            ->name('employee.attendance.show');
     });
 });
 
+
+/**
+ * ==============================
+ * 従業員ユーザーの勤怠修正関連
+ * ==============================
+ */
+Route::prefix('employee')->group(function () {
+
+    Route::middleware('auth:employee')->group(function () {
+
+
+    });
+});
 
 
 /**

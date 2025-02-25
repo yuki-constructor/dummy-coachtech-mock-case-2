@@ -2,20 +2,21 @@
 
 namespace App\Providers;
 
-use App\Models\Admin;
-use Illuminate\Support\Facades\Auth;
 use App\Actions\Fortify\CreateNewUser;
-use App\Models\Employee;
-use Laravel\Fortify\Fortify;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Cache\RateLimiting\Limit;
-use Illuminate\Support\Facades\RateLimiter;
 use App\Actions\Fortify\ResetUserPassword;
-use Illuminate\Http\Request;
-use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Str;
 use App\Actions\Fortify\UpdateUserPassword;
 use App\Actions\Fortify\UpdateUserProfileInformation;
+use App\Models\Admin;
+use App\Models\Employee;
+use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Str;
+use Laravel\Fortify\Fortify;
+
 
 
 class FortifyServiceProvider extends ServiceProvider

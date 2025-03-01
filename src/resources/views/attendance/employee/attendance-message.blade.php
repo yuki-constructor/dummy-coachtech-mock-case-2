@@ -36,7 +36,7 @@
         updateTime();
     </script> --}}
 
-    <script>
+    {{-- <script>
         function updateDateTime() {
             const now = new Date();
 
@@ -59,6 +59,8 @@
 
         updateDateTime(); // 初回実行
         setInterval(updateDateTime, 1000); // 1秒ごとに更新
-    </script>
+    </script> --}}
+
+    <script src="{{ asset('js/attendance-create.js') }}"></script>
 
 @endsection

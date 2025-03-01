@@ -34,14 +34,20 @@ class AttendanceController extends Controller
             ->with('status')
             ->first();
 
-        // AttendanceStatusから勤務外のidを取得
-        $status = AttendanceStatus::where('status', '勤務外')->first();
+        // //attendance_statusesテーブルから勤務外のレコードを取得
+        // $status = AttendanceStatus::where('status', '勤務外')->first();
+
+        //AttendanceStatusモデルでステータスを定数化。attendance_statusesテーブルから「勤務外」のレコードを取得
+        $status = AttendanceStatus::where('status', AttendanceStatus::STATUS_OFF)->first();
 
         // 今日の勤怠レコードがあり、かつ end_time がセットされている（退勤済み）の場合
         // if (Attendance::where('employee_id', $employee->id)->where('date', $today)->exists())
         // if ($todayAttendance && !is_null($todayAttendance->end_time)) {
-        if ($todayAttendance && ($todayAttendance->attendance_status_id == $status->id)) {
 
+        // 「出勤」は1日に1回だけ押下できるため、今日の勤怠レコードがあり、かつ 勤怠ステータスが退勤済みか判定
+        if ($todayAttendance && ($todayAttendance->attendance_status_id === $status->id)) {
+
+            // エラーメッセージ表示
             // return view('attendance.employee.attendance-message')->with('error', '本日はすでに出勤登録と退勤登録が完了しています。');
             return to_route('employee.attendance.message')->with(['message' => '本日はすでに出勤登録と退勤登録が完了しています。']);
         }
@@ -49,6 +55,7 @@ class AttendanceController extends Controller
         // 最新の勤怠レコードを取得（日をまたいで退勤する場合のため、当日制限なし）
         $attendance = Attendance::where('employee_id', $employee->id)->latest()->with('status')->first();
 
+        // 勤怠登録画面を表示
         return view('attendance.employee.attendance-create', compact('attendance'));
     }
 
@@ -101,10 +108,14 @@ class AttendanceController extends Controller
         //     return redirect()->back()->withErrors('既に勤務中のため、出勤登録できません。');
         // }
 
-        $status = AttendanceStatus::where('status', '勤務中')->first();
+        // // attendance_statusesテーブルから勤務中のレコードを取得
+        // $status = AttendanceStatus::where('status', '勤務中')->first();
 
-        // 新しい出勤レコード作成
-        $attendance = Attendance::create([
+        // AttendanceStatusモデルでステータスを定数化。attendance_statusesテーブルから「勤務中」のレコードを取得
+        $status = AttendanceStatus::where('status', AttendanceStatus::STATUS_ON)->first();
+
+        // 出勤テーブルにレコード作成（勤務中ステータスを付与）
+        Attendance::create([
             'employee_id' => $employee->id,
             'date' => $today,
             'start_time' => Carbon::now()->toTimeString(),
@@ -150,6 +161,7 @@ class AttendanceController extends Controller
         //     return redirect()->back()->withErrors('未終了の休憩があります。');
         // }
 
+        // 休憩テーブルにレコード作成
         $attendance->breaks()->create([
 
             'break_start_time' => Carbon::now()->toTimeString(),
@@ -161,8 +173,13 @@ class AttendanceController extends Controller
         // $status = AttendanceStatus::where('status', '休憩中')->first();
         // $attendance->statuses()->sync($status->id);
 
-        $status = AttendanceStatus::where('status', '休憩中')->first();
+        // // attendance_statusesテーブルから休憩中のレコードを取得
+        // $status = AttendanceStatus::where('status', '休憩中')->first();
 
+        // AttendanceStatusモデルでステータスを定数化。attendance_statusesテーブルから「休憩中」のレコードを取得
+        $status = AttendanceStatus::where('status', AttendanceStatus::STATUS_BREAK)->first();
+
+        // 勤怠テーブルのステータスを「休憩中」に更新
         $attendance->update([
             'attendance_status_id' => $status->id
         ]);
@@ -201,6 +218,7 @@ class AttendanceController extends Controller
         //     $lastBreak->update(['break_end_time' => Carbon::now()->toTimeString()]);
         // }
 
+        // 休憩テーブルから、休憩戻りの登録がされていないレコードを取得
         $lastBreak = $attendance->breaks()->whereNull('break_end_time')->latest()->first();
 
         // 休憩戻りが登録されていない休憩がない場合はエラー（ビューの制御で、「休憩中」のステータスでない場合、休憩戻りボタンが表示されることはないため、削除）
@@ -208,14 +226,20 @@ class AttendanceController extends Controller
         //     return redirect()->back()->withErrors('未終了の休憩がありません。');
         // }
 
+        // 休憩戻り時間を登録
         $lastBreak->update(['break_end_time' => Carbon::now()->toTimeString()]);
 
         // ステータスを「勤務中」に戻す
         // $status = AttendanceStatus::where('status', '勤務中')->first();
         // $attendance->statuses()->sync($status->id);
 
-        $status = AttendanceStatus::where('status', '勤務中')->first();
+        // // attendance_statusesテーブルから勤務中のレコードを取得
+        // $status = AttendanceStatus::where('status', '勤務中')->first();
 
+          // AttendanceStatusモデルでステータスを定数化。attendance_statusesテーブルから「勤務中」のレコードを取得
+          $status = AttendanceStatus::where('status', AttendanceStatus::STATUS_ON)->first();
+
+        // 勤怠テーブルのステータスを「勤務中」に更新
         $attendance->update([
             'attendance_status_id' => $status->id
         ]);
@@ -247,8 +271,13 @@ class AttendanceController extends Controller
         //     return redirect()->back()->withErrors('勤務中でないため、退勤登録できません。');
         // }
 
-        $status = AttendanceStatus::where('status', '勤務外')->first();
+        // // attendance_statusesテーブルから勤務外のレコードを取得
+        // $status = AttendanceStatus::where('status', '勤務外')->first();
 
+        // AttendanceStatusモデルでステータスを定数化。attendance_statusesテーブルから「勤務外」のレコードを取得
+        $status = AttendanceStatus::where('status', AttendanceStatus::STATUS_OFF)->first();
+
+        // 勤怠テーブルのステータスを「勤務外」に更新
         $attendance->update([
             'end_time' => Carbon::now()->toTimeString(),
             'attendance_status_id'  => $status->id,

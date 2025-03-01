@@ -12,8 +12,14 @@ class AttendanceStatusTableSeeder extends Seeder
      */
     public function run(): void
     {
-        $statuses = ['勤務外', '勤務中', '休憩中'];
-        // $statuses = ['勤務外', '出勤中', '休憩中', '退勤済'];
+         // $statuses = ['勤務外', '出勤中', '休憩中', '退勤済'];
+        // $statuses = ['勤務外', '勤務中', '休憩中'];
+         // AttendanceStatusモデルでステータス'勤務外', '勤務中', '休憩中'を定数化。AttendanceStatusモデルから呼び出し。
+        $statuses = [
+            AttendanceStatus::STATUS_OFF,
+            AttendanceStatus::STATUS_ON,
+            AttendanceStatus::STATUS_BREAK,
+        ];
 
         foreach ($statuses as $status) {
             AttendanceStatus::create(['status' => $status]);

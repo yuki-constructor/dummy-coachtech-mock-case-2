@@ -13,7 +13,7 @@ class Attendance extends Model
     protected $fillable = ['employee_id', 'date', 'start_time', 'end_time','attendance_status_id'];
 
     // Attendanceは１対多の関係でEmployeeと関連（従業員の勤怠情報）
-    public function attendance()
+    public function employee()
     {
         return $this->belongsTo(Employee::class);
     }
@@ -32,6 +32,12 @@ class Attendance extends Model
 
     // Attendanceは１対多の関係でBreakと関連（従業員は１日に何度でも休憩できる）
     public function breaks()
+    {
+        return $this->hasMany(BreakModel::class);
+    }
+
+    // Attendanceは１対多の関係でAttendanceRequestと関連（修正申請は何度でもできる）
+    public function attendanceRequests()
     {
         return $this->hasMany(BreakModel::class);
     }

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\AttendanceRequestController;
 use App\Http\Controllers\EmployeeController;
 use Illuminate\Support\Facades\Route;
 
@@ -21,7 +22,8 @@ Route::prefix('employee')->group(function () {
     /**
      *  従業員のログイン認証処理
      */
-    Route::post('/login', [EmployeeController::class, 'authenticate'])->name('employee.authenticate');
+    Route::post('/login', [EmployeeController::class, 'authenticate'])
+        ->name('employee.authenticate');
 
     /**
      *  従業員のログアウト処理
@@ -31,7 +33,8 @@ Route::prefix('employee')->group(function () {
     /**
      * 従業員の登録画面を表示
      */
-    Route::get('/register', [EmployeeController::class, 'register'])->name('employee.register');
+    Route::get('/register', [EmployeeController::class, 'register'])
+        ->name('employee.register');
 
     /**
      * 従業員の登録処理
@@ -41,29 +44,26 @@ Route::prefix('employee')->group(function () {
     /**
      * 従業員のメール認証処理
      */
-    Route::get('/email/verify/{id}/{hash}', [EmployeeController::class, 'emailVerify'])->name('verification.verify');
+    Route::get('/email/verify/{id}/{hash}', [EmployeeController::class, 'emailVerify'])
+        ->name('verification.verify');
 
     /**
      * メール認証誘導画面を表示
      */
-    Route::get('/email-authentication-invitation/{employeeId}', [EmployeeController::class, 'invitation'])->name('email.authentication.invitation');
+    Route::get('/email-authentication-invitation/{employeeId}', [EmployeeController::class, 'invitation'])
+        ->name('email.authentication.invitation');
 
     /**
      * 認証メール再送処理
      */
     Route::post('/email/verification-notification/{employeeId}', [EmployeeController::class, 'resend'])
         ->name('verification.resend');
-});
 
-
-
-/**
- * ==============================
- * 従業員ユーザーの勤怠登録関連
- * ==============================
- */
-Route::prefix('employee')->group(function () {
-
+    /**
+     * ==============================
+     * 従業員ユーザーの勤怠登録関連
+     * ==============================
+     */
     Route::middleware('auth:employee')->group(function () {
 
         /**
@@ -83,24 +83,28 @@ Route::prefix('employee')->group(function () {
         /**
          *  従業員の出勤登録処理（認証必須）
          */
-        Route::post('/attendance/clock-in', [AttendanceController::class, 'clockIn'])->name('attendance.clock-in');
+        Route::post('/attendance/clock-in', [AttendanceController::class, 'clockIn'])
+            ->name('attendance.clock-in');
 
         /**
          *  従業員の休憩開始登録処理（認証必須）
          */
-        Route::post('/attendance/break-start', [AttendanceController::class, 'breakStart'])->name('attendance.break-start');
+        Route::post('/attendance/break-start', [AttendanceController::class, 'breakStart'])
+            ->name('attendance.break-start');
 
         /**
          *  従業員の休憩終了登録処理（認証必須）
          */
-        Route::post('/attendance/break-end', [AttendanceController::class, 'breakEnd'])->name('attendance.break-end');
+        Route::post('/attendance/break-end', [AttendanceController::class, 'breakEnd'])
+            ->name('attendance.break-end');
 
         /**
          *  従業員の退勤登録処理（認証必須）
          */
-        Route::post('/attendance/clock-out', [AttendanceController::class, 'clockOut'])->name('attendance.clock-out');
+        Route::post('/attendance/clock-out', [AttendanceController::class, 'clockOut'])
+            ->name('attendance.clock-out');
 
-         /**
+        /**
          *  従業員の勤怠一覧画面を表示（認証必須）
          */
         Route::get('/attendance-list', [AttendanceController::class, 'attendanceList'])
@@ -112,19 +116,23 @@ Route::prefix('employee')->group(function () {
         Route::get('/attendance/{attendanceId}', [AttendanceController::class, 'attendanceShow'])
             ->name('employee.attendance.show');
     });
-});
 
-
-/**
- * ==============================
- * 従業員ユーザーの勤怠修正関連
- * ==============================
- */
-Route::prefix('employee')->group(function () {
-
+    /**
+     * ==============================
+     * 従業員ユーザーの勤怠修正申請関連
+     * ==============================
+     */
     Route::middleware('auth:employee')->group(function () {
 
+        // 勤怠修正申請処理（認証必須）
+        Route::post('/attendance/{attendanceId}/request', [AttendanceRequestController::class, 'attendanceRequest'])
+            ->name('employee.attendance.request');
 
+        /**
+         *  従業員の勤怠修正申請一覧画面を表示（認証必須）
+         */
+        Route::get('/attendance/request/list/pending', [AttendanceRequestController::class, 'attendanceRequestListPending'])
+            ->name('employee.attendance.request.list.pending');
     });
 });
 
@@ -139,23 +147,27 @@ Route::prefix('admin')->group(function () {
     /**
      *  管理者のログイン画面を表示
      */
-    Route::get('/login', [AdminController::class, 'login'])->name('admin.login');
+    Route::get('/login', [AdminController::class, 'login'])
+        ->name('admin.login');
 
     /**
      *  管理者のログイン認証処理
      */
-    Route::post('/login', [AdminController::class, 'authenticate'])->name('admin.authenticate');
+    Route::post('/login', [AdminController::class, 'authenticate'])
+        ->name('admin.authenticate');
 
     /**
      *  管理者のログアウト処理
      */
-    Route::post('/logout', [AdminController::class, 'logout'])->name('admin.logout');
+    Route::post('/logout', [AdminController::class, 'logout'])
+        ->name('admin.logout');
 
     Route::middleware('auth:admin')->group(function () {
 
         /**
          *  管理者の勤怠リストを表示（認証必須）
          */
-        Route::get('/attendance-list', [AdminController::class, 'attendanceList'])->name('attendance.list');
+        Route::get('/attendance-list', [AdminController::class, 'attendanceList'])
+            ->name('attendance.list');
     });
 });

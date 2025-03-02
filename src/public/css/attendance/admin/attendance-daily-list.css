@@ -28,7 +28,7 @@ h1 {
     text-align: left;
 }
 
-.month-navigation {
+.day-navigation {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -37,9 +37,9 @@ h1 {
     background-color: white;
     border-radius: 10px;
     padding: 10px;
-}
+    }
 
-.month-navigation a {
+.day-navigation a {
     font-size: clamp(14px, 1.25vw, 19px);
     padding: 5px 20px;
     border: none;
@@ -52,23 +52,23 @@ h1 {
     text-decoration: none;
 }
 
-.month-navigation a:hover {
+.day-navigation a:hover{
     color: blue;
     text-decoration: underline;
 }
 
-.month-navigation-center {
+.day-navigation-center {
     display: flex;
     justify-content: center;
 }
 
-.month-navigation-calendar__image {
+.day-navigation-calendar__image {
     width: 15%;
     height: auto;
     margin-right: 10px;
 }
 
-.month {
+.day {
     /* font-size: 1.2rem; */
     font-size: clamp(18px, 1.65vw, 25px);
     font-weight: bold;
@@ -109,7 +109,7 @@ h1 {
     font-weight: bold;
 }
 
-.table-row a:hover {
+.table-row a:hover{
     color: blue;
     text-decoration: underline;
 }

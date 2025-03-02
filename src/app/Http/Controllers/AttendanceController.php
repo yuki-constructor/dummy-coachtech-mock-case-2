@@ -8,13 +8,14 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 
-/**
- * ==============================
- * 従業員ユーザーの勤怠登録関連
- * ==============================
- */
 class AttendanceController extends Controller
 {
+    /**
+     * ==============================
+     * 従業員ユーザーの勤怠登録関連
+     * ==============================
+     */
+
     /**
      * 従業員の勤怠登録画面を表示
      *
@@ -236,8 +237,8 @@ class AttendanceController extends Controller
         // // attendance_statusesテーブルから勤務中のレコードを取得
         // $status = AttendanceStatus::where('status', '勤務中')->first();
 
-          // AttendanceStatusモデルでステータスを定数化。attendance_statusesテーブルから「勤務中」のレコードを取得
-          $status = AttendanceStatus::where('status', AttendanceStatus::STATUS_ON)->first();
+        // AttendanceStatusモデルでステータスを定数化。attendance_statusesテーブルから「勤務中」のレコードを取得
+        $status = AttendanceStatus::where('status', AttendanceStatus::STATUS_ON)->first();
 
         // 勤怠テーブルのステータスを「勤務中」に更新
         $attendance->update([
@@ -337,5 +338,44 @@ class AttendanceController extends Controller
             ->firstOrFail();
 
         return view('attendance.employee.attendance-show', compact('attendance'));
+    }
+
+
+    /**
+     * ==============================
+     * 管理者ユーザーの勤怠管理関連
+     * ==============================
+     */
+
+    /**
+     * 日次勤怠一覧画面（管理者）を表示
+     *
+     * @route GET /admin/attendance/daily-list
+     * @return \Illuminate\View\View
+     */
+    public function attendanceDailyList(Request $request)
+    {
+        // 日付を取得 (指定がない場合は今日の日付)
+        $date = Carbon::today();
+
+        // 勤怠データを取得
+        $attendances = Attendance::where('date', $date->toDateString())
+            ->with(['employee', 'breaks'])
+            ->get();
+
+        return view('attendance.admin.attendance-daily-list', compact('attendances', 'date'));
+    }
+
+    /**
+     * 勤怠詳細画面（管理者）を表示
+     *
+     * @route GET /attendances/{attendanceId}/show
+     * @return \Illuminate\View\View
+     */
+    public function adminAttendanceShow($attendanceId)
+    {
+        $attendance = Attendance::with(['employee', 'breaks'])->findOrFail($attendanceId);
+
+        return view('attendance.admin.attendance-show', compact('attendance'));
     }
 }

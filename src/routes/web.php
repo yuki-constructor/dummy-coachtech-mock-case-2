@@ -164,10 +164,29 @@ Route::prefix('admin')->group(function () {
 
     Route::middleware('auth:admin')->group(function () {
 
+        // /**
+        //  *  管理者の勤怠リストを表示（認証必須）
+        //  */
+        // Route::get('/attendance-list', [AdminController::class, 'attendanceList'])
+        //     ->name('attendance.list');
+    });
+
+    /**
+     * ==============================
+     * 管理者ユーザーの勤怠管理関連
+     * ==============================
+     */
+    Route::middleware('auth:admin')->group(function () {
         /**
-         *  管理者の勤怠リストを表示（認証必須）
+         *  日次勤怠一覧画面（管理者）を表示（認証必須）
          */
-        Route::get('/attendance-list', [AdminController::class, 'attendanceList'])
-            ->name('attendance.list');
+        Route::get('/attendance/daily-list', [AttendanceController::class, 'attendanceDailyList'])
+            ->name('admin.attendance.daily-list');
+
+        /**
+         *  勤怠詳細画面（管理者）を表示（認証必須）
+         */
+        Route::get('/attendances/{attendanceId}/show', [AttendanceController::class, 'adminAttendanceShow'])
+            ->name('admin.attendances.show');
     });
 });

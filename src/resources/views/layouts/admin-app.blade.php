@@ -23,7 +23,7 @@
                 <nav class="nav">
                     <ul class="nav__ul">
                         <li>
-                            <a class="nav__attendance-list" href="">
+                            <a class="nav__attendance-list" href="{{ route('admin.attendance.daily-list') }}" method="GET">
                                 勤怠一覧
                             </a>
                         </li>

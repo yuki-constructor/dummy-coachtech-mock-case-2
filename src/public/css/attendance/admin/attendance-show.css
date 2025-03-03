@@ -28,6 +28,11 @@ h1 {
     text-align: left;
 }
 
+.success-message {
+    font-weight: bold;
+    color: #f00c0c;
+}
+
 .attendance-table {
     display: grid;
     grid-template-columns: 1.5fr 1fr 1fr;
@@ -67,7 +72,7 @@ h1 {
     padding-left: 30px;
 }
 
-.error-message p{
+.error-message p {
     color: #e65a5a;
 }
 

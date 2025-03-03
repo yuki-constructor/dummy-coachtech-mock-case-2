@@ -1,4 +1,4 @@
-@extends('layouts.employee-app')
+@extends('layouts.admin-app')
 
 @section('title', '勤怠詳細画面（従業員）')
 
@@ -10,7 +10,16 @@
     <div class="container-wrap">
         <div class="container">
             <h1>勤怠詳細</h1>
-            <form action="{{ route('employee.attendance.request', ['attendanceId' => $attendance->id]) }}" method="POST">
+
+            {{-- 修正完了メッセージ --}}
+            <span class="success-message">
+                @if (session('success'))
+                    <p class="success-message">{{ session('success') }}</p>
+                @endif
+            </span>
+
+            <form action="{{ route('admin.attendances.correct', ['attendanceId' => $attendance->id]) }}" method="POST">
+                {{-- <form action="http://localhost/admin/attendances/31/correct" method="POST"> --}}
                 {{-- <form action="" method="POST"> --}}
                 @csrf
                 <div class="attendance-table">
@@ -43,7 +52,7 @@
                             <input class="time-box" type="time" name="end_time"
                                 value="{{ $attendance->end_time ? \Carbon\Carbon::parse($attendance->end_time)->format('H:i') : '' }}" />
                             <!-- <span class="time-box">09:00</span> 〜
-                                                                        <span class="time-box">18:00</span> -->
+                                                                            <span class="time-box">18:00</span> -->
                         </div>
                         {{-- エラーメッセージ --}}
                         <span class="error-message">
@@ -74,7 +83,7 @@
                                 <input class="time-box" type="time" name="breaks[{{ $break->id }}][end]"
                                     value="{{ $break->break_end_time ? \Carbon\Carbon::parse($break->break_end_time)->format('H:i') : '' }}" />
                                 <!-- <span class="time-box">12:00</span> 〜
-                                                                        <span class="time-box">13:00</span> -->
+                                                                            <span class="time-box">13:00</span> -->
                             </div>
                             {{-- エラーメッセージ --}}
                             <span class="error-message">
@@ -105,11 +114,11 @@
                             <textarea class="reason__input" name="reason" placeholder="修正理由"></textarea>
                         </div>
                         <!-- <input
-                                                                          type="text"
-                                                                          class="note"
-                                                                          value="電車遅延のため"
-                                                                          readonly
-                                                                        /> -->
+                                                                              type="text"
+                                                                              class="note"
+                                                                              value="電車遅延のため"
+                                                                              readonly
+                                                                            /> -->
                         {{-- エラーメッセージ --}}
                         <span class="error-message">
                             @if ($errors->has('reason'))

@@ -12,7 +12,7 @@ class AttendanceRequestRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth('employee')->check();
+        return auth('employee')->check() || auth('admin')->check();
     }
 
     /**

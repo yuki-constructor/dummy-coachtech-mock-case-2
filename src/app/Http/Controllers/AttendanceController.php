@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AttendanceRequestRequest;
 use App\Models\Attendance;
 use App\Models\AttendanceStatus;
+use App\Models\BreakModel;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -353,10 +355,10 @@ class AttendanceController extends Controller
      * @route GET /admin/attendance/daily-list
      * @return \Illuminate\View\View
      */
-    public function attendanceDailyList(Request $request)
+    public function attendanceDailyList(Request $request, $date = null)
     {
         // 日付を取得 (指定がない場合は今日の日付)
-        $date = Carbon::today();
+        $date = $date ? Carbon::parse($date) : Carbon::today();
 
         // 勤怠データを取得
         $attendances = Attendance::where('date', $date->toDateString())
@@ -377,5 +379,66 @@ class AttendanceController extends Controller
         $attendance = Attendance::with(['employee', 'breaks'])->findOrFail($attendanceId);
 
         return view('attendance.admin.attendance-show', compact('attendance'));
+    }
+
+    /**
+     * 勤怠情報の更新処理（管理者）
+     *
+     * @route POST /attendances/{attendanceId}/correct
+     */
+    // public function adminAttendanceCorrect(AttendanceRequestRequest $request, $attendanceId)
+    public function adminAttendanceCorrect(AttendanceRequestRequest $request, $attendanceId)
+    {
+        // 勤怠データの取得
+        $attendance = Attendance::with('breaks')->findOrFail($attendanceId);
+
+        // 出勤時間・退勤時間の更新
+        $attendance->update([
+            'start_time' => $request->start_time,
+            'end_time' => $request->end_time,
+        ]);
+
+        // breaksテーブルのidを取得
+        // $existingBreakIds = $attendance->breaks->pluck('id')->toArray();
+
+        // リクエストされた break データの処理
+        $requestBreaks = $request->input('breaks', []);
+
+        // 更新・追加された break ID を保存
+        // $updatedBreakIds = [];
+
+        //        foreach ($requestBreaks as $breakId => $breakData) {
+        //     if (!empty($breakData['start']) && !empty($breakData['end'])) {
+        //         // 既存の break レコードを更新
+        //         BreakModel::where('id', $breakId)->update([
+        //             'break_start_time' => $breakData['start'],
+        //             'break_end_time' => $breakData['end'],
+        //         ]);
+        //     } elseif (empty($breakData['start']) && empty($breakData['end'])) {
+        //         // start と end の両方がない場合、NULL に更新
+        //         BreakModel::where('id', $breakId)->update([
+        //             'break_start_time' => null,
+        //             'break_end_time' => null,
+        //         ]);
+        //     }
+        // }
+
+        foreach ($requestBreaks as $breakId => $breakData) {
+            if (!empty($breakData['start']) && !empty($breakData['end'])) {
+                // 既存の break レコードを更新
+                BreakModel::where('id', $breakId)->update([
+                    'break_start_time' => $breakData['start'],
+                    'break_end_time' => $breakData['end'],
+                ]);
+            } elseif (empty($breakData['start']) && empty($breakData['end'])) {
+                // start と end の両方がない場合、NULL に更新
+                BreakModel::where('id', $breakId)->update([
+                    'break_start_time' => null,
+                    'break_end_time' => null,
+                ]);
+            }
+        }
+
+        return redirect()->route('admin.attendances.show', $attendanceId)->with('success',$attendance->employee->name. 'さんの勤怠情報を修正しました。');
     }
 }

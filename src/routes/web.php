@@ -178,15 +178,21 @@ Route::prefix('admin')->group(function () {
      */
     Route::middleware('auth:admin')->group(function () {
         /**
-         *  日次勤怠一覧画面（管理者）を表示（認証必須）
+         *  日次勤怠一覧画面（管理者用）を表示（認証必須）
          */
-        Route::get('/attendance/daily-list', [AttendanceController::class, 'attendanceDailyList'])
+        Route::get('/attendance/daily-list/{date?}', [AttendanceController::class, 'attendanceDailyList'])
             ->name('admin.attendance.daily-list');
 
         /**
-         *  勤怠詳細画面（管理者）を表示（認証必須）
+         *  勤怠詳細画面（管理者用）を表示（認証必須）
          */
         Route::get('/attendances/{attendanceId}/show', [AttendanceController::class, 'adminAttendanceShow'])
             ->name('admin.attendances.show');
+
+        /**
+         *  勤怠修正処理（管理者用）（認証必須）
+         */
+        Route::post('/attendances/{attendanceId}/correct', [AttendanceController::class, 'adminAttendanceCorrect'])
+            ->name('admin.attendances.correct');
     });
 });

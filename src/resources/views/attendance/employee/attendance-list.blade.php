@@ -34,7 +34,7 @@
                     <span>詳細</span>
                 </div>
 
-                <!-- 勤怠データを繰り返し -->
+                {{-- 勤怠データを繰り返し --}}
                 {{-- <div class="table-row">
                     <span>06/01(木)</span>
                     <span>09:00</span>
@@ -48,10 +48,14 @@
                     <div class="table-row">
                         {{-- <span>{{ \Carbon\Carbon::parse($attendance->date)->format('m/d (D)') }}</span> --}}
                         <span>{{ \Carbon\Carbon::parse($attendance->date)->locale('ja')->isoFormat('MM/DD (ddd)') }}</span>
+
+                        {{-- 出勤時刻 --}}
                         <span>{{ $attendance->start_time ? \Carbon\Carbon::parse($attendance->start_time)->format('H:i') : '-' }}</span>
+
+                        {{-- 退勤時刻 --}}
                         <span>{{ $attendance->end_time ? \Carbon\Carbon::parse($attendance->end_time)->format('H:i') : '-' }}</span>
 
-                        <!-- 休憩時間の合計を計算 -->
+                        {{-- 休憩時間の合計を計算 --}}
                         <span>
                             @php
                                 $totalBreakMinutes = $attendance->breaks->sum(function ($break) {
@@ -68,7 +72,7 @@
                             @endphp
                         </span>
 
-                        <!-- 勤務時間の合計を計算 -->
+                        {{-- 勤務時間の合計を計算 --}}
                         <span>
                             @if ($attendance->start_time && $attendance->end_time)
                                 @php
@@ -84,8 +88,9 @@
                                 -
                             @endif
                         </span>
-
-                        <a href="{{route('employee.attendance.show',["attendanceId"=>$attendance->id])}}">詳細</a>
+                        
+                        {{-- 詳細リンク --}}
+                        <a href="{{ route('employee.attendance.show', ['attendanceId' => $attendance->id]) }}">詳細</a>
                     </div>
                 @endforeach
 

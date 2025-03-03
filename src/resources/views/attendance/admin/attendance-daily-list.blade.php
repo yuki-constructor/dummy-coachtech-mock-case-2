@@ -1,4 +1,4 @@
-@extends('layouts.employee-app')
+@extends('layouts.admin-app')
 
 @section('title', '日次勤怠一覧画面（管理者）')
 
@@ -31,7 +31,7 @@
                     <span>詳細</span>
                 </div>
 
-                <!-- 勤怠データを繰り返し -->
+                  {{-- 勤怠データを繰り返し --}}
                 @foreach ($attendances as $attendance)
                 <div class="table-row">
                     <span>{{ $attendance->employee->name }}</span>
@@ -42,7 +42,7 @@
                      {{-- 退勤時刻 --}}
                     <span>{{ $attendance->end_time ? \Carbon\Carbon::parse($attendance->end_time)->format('H:i') : '-' }}</span>
 
-                    {{-- 休憩時間計算 --}}
+                    {{-- 休憩時間の合計を計算--}}
                     {{-- @php
                         $totalBreakMinutes = $attendance->breaks->sum(function($break) {
                             return \Carbon\Carbon::parse($break->break_start_time)->diffInMinutes($break->break_end_time);
@@ -64,7 +64,7 @@
 
                     <span>{{ $breakTime }}</span>
 
-                    {{-- 総労働時間計算 --}}
+                        {{-- 勤務時間の合計を計算--}}
                     {{-- @php
                         $workMinutes = \Carbon\Carbon::parse($attendance->start_time)->diffInMinutes($attendance->end_time) - $totalBreakMinutes;
                         $totalWorkTime = floor($workMinutes / 60) . ':' . str_pad($workMinutes % 60, 2, '0', STR_PAD_LEFT);

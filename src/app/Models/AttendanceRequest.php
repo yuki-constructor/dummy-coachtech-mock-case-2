@@ -8,6 +8,11 @@ class AttendanceRequest extends Model
 {
     protected $fillable = ['attendance_id', 'attendance_request_status_id', 'start_time', 'end_time', 'reason'];
 
+    protected $casts = [
+        'start_time' => 'datetime',
+        'end_time' => 'datetime',
+    ];
+
     // AttendanceRequestは１対多の関係でAttendanceと関連（修正申請は何度でもできる）
     public function attendance()
     {

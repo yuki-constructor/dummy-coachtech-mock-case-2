@@ -9,12 +9,13 @@
 @section('content')
     <div class="container-wrap">
         <div class="container">
-            <h1>勤怠一覧</h1>
+            <h1>{{ $date->isoFormat('YYYY年M月D日') }}の勤怠</h1>
             <div class="day-navigation">
                 <a href="{{ route('admin.attendance.daily-list', ['date' => $date->copy()->subDay()->toDateString()]) }}">&larr;
                     前日</a>
                 <div class="day-navigation-center">
-                    <img class="day-navigation-calendar__image" src="{{ asset('storage/photos/logo_images/calendar.png') }}" alt="カレンダー" />
+                    <img class="day-navigation-calendar__image" src="{{ asset('storage/photos/logo_images/calendar.png') }}"
+                        alt="カレンダー" />
                     <span class="day">{{ $date->format('Y/m/d') }}</span>
                 </div>
                 <a href="{{ route('admin.attendance.daily-list', ['date' => $date->copy()->addDay()->toDateString()]) }}">翌日
@@ -31,57 +32,52 @@
                     <span>詳細</span>
                 </div>
 
-                  {{-- 勤怠データを繰り返し --}}
+                {{-- 勤怠データを繰り返し --}}
                 @foreach ($attendances as $attendance)
-                <div class="table-row">
-                    <span>{{ $attendance->employee->name }}</span>
+                    <div class="table-row">
+                        <span>{{ $attendance->employee->name }}</span>
 
-                     {{-- 出勤時刻 --}}
-                    <span>{{ \Carbon\Carbon::parse($attendance->start_time)->format('H:i') }}</span>
+                        {{-- 出勤時刻 --}}
+                        <span>{{ \Carbon\Carbon::parse($attendance->start_time)->format('H:i') }}</span>
 
-                     {{-- 退勤時刻 --}}
-                    <span>{{ $attendance->end_time ? \Carbon\Carbon::parse($attendance->end_time)->format('H:i') : '-' }}</span>
+                        {{-- 退勤時刻 --}}
+                        <span>{{ $attendance->end_time ? \Carbon\Carbon::parse($attendance->end_time)->format('H:i') : '-' }}</span>
 
-                    {{-- 休憩時間の合計を計算--}}
-                    {{-- @php
-                        $totalBreakMinutes = $attendance->breaks->sum(function($break) {
-                            return \Carbon\Carbon::parse($break->break_start_time)->diffInMinutes($break->break_end_time);
-                        });
-                        $breakTime = floor($totalBreakMinutes / 60) . ':' . str_pad($totalBreakMinutes % 60, 2, '0', STR_PAD_LEFT);
-                    @endphp --}}
+                        {{-- 休憩時間の合計 --}}
+                        {{-- @php
+                            $totalBreakMinutes = 0;
+                            foreach ($attendance->breaks as $break) {
+                                if ($break->break_start_time && $break->break_end_time) {
+                                    $totalBreakMinutes += \Carbon\Carbon::parse(
+                                        $break->break_start_time,
+                                    )->diffInMinutes($break->break_end_time);
+                                }
+                            }
+                            $breakTime =
+                                $totalBreakMinutes > 0
+                                    ? floor($totalBreakMinutes / 60) .
+                                        ':' .
+                                        str_pad($totalBreakMinutes % 60, 2, '0', STR_PAD_LEFT)
+                                    : '-';
+                        @endphp
 
-                    @php
-                    $totalBreakMinutes = 0;
-                    foreach ($attendance->breaks as $break) {
-                        if ($break->break_start_time && $break->break_end_time) {
-                            $totalBreakMinutes += \Carbon\Carbon::parse($break->break_start_time)->diffInMinutes($break->break_end_time);
-                        }
-                    }
-                    $breakTime = $totalBreakMinutes > 0
-                        ? floor($totalBreakMinutes / 60) . ':' . str_pad($totalBreakMinutes % 60, 2, '0', STR_PAD_LEFT)
-                        : '-';
-                @endphp
+                        <span>{{ $breakTime }}</span> --}}
+                        <span>{{ $attendance->total_break_time }}</span>
 
-                    <span>{{ $breakTime }}</span>
-
-                        {{-- 勤務時間の合計を計算--}}
-                    {{-- @php
-                        $workMinutes = \Carbon\Carbon::parse($attendance->start_time)->diffInMinutes($attendance->end_time) - $totalBreakMinutes;
-                        $totalWorkTime = floor($workMinutes / 60) . ':' . str_pad($workMinutes % 60, 2, '0', STR_PAD_LEFT);
-                    @endphp --}}
-
-                    @php
+                        {{-- 勤務時間の合計 --}}
+                        {{-- @php
                     $totalWorkTime = '-';
                     if ($attendance->start_time && $attendance->end_time) {
                         $workMinutes = \Carbon\Carbon::parse($attendance->start_time)->diffInMinutes($attendance->end_time) - $totalBreakMinutes;
                         $totalWorkTime = floor($workMinutes / 60) . ':' . str_pad($workMinutes % 60, 2, '0', STR_PAD_LEFT);
                     }
                 @endphp
-                    <span>{{ $totalWorkTime }}</span>
+                    <span>{{ $totalWorkTime }}</span> --}}
+                        <span>{{ $attendance->total_work_time }}</span>
 
-                    {{-- 詳細リンク --}}
-                    <a href="{{ route('admin.attendances.show', ['attendanceId' => $attendance->id]) }}">詳細</a>
-                </div>
+                        {{-- 詳細画面へのリンク --}}
+                        <a href="{{ route('admin.attendances.show', ['attendanceId' => $attendance->id]) }}">詳細</a>
+                    </div>
                 @endforeach
 
             </div>

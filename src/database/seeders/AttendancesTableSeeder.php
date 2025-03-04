@@ -22,29 +22,58 @@ class AttendancesTableSeeder extends Seeder
         // 全従業員を取得
         $employees = Employee::all();
 
-        // 2023-05-01 から 2023-07-31 までの期間を作成
+        // 2025-02-01 から 2025-04-30 までの期間を作成
         $period = CarbonPeriod::create('2025-02-01', '2025-04-30');
 
         foreach ($employees as $employee) {
             foreach ($period as $date) {
+                // // 勤怠情報を登録
+                // $attendance = Attendance::create([
+                //     'employee_id' => $employee->id,
+                //     'attendance_status_id' => $statusOffId,
+                //     'date' => $date->toDateString(),
+                //     'start_time' => '09:00:00',
+                //     'end_time' => '18:00:00',
+                //     'created_at' => $date->copy()->setTime(9, 0, 0)->toDateTimeString(),
+                //     'updated_at' => $date->copy()->setTime(18, 0, 0)->toDateTimeString(),
+                // ]);
+
+                // 出勤・退勤の日時を作成
+                $startTime = $date->copy()->setTime(9, 0, 0); // 2025-02-01 09:00:00 のようにする
+                $endTime = $date->copy()->setTime(18, 0, 0);
+
                 // 勤怠情報を登録
                 $attendance = Attendance::create([
                     'employee_id' => $employee->id,
                     'attendance_status_id' => $statusOffId,
                     'date' => $date->toDateString(),
-                    'start_time' => '09:00:00',
-                    'end_time' => '18:00:00',
-                    'created_at' => $date->copy()->setTime(9, 0, 0)->toDateTimeString(),
-                    'updated_at' => $date->copy()->setTime(18, 0, 0)->toDateTimeString(),
+                    'start_time' => $startTime->toDateTimeString(),
+                    'end_time' => $endTime->toDateTimeString(),
+                    'created_at' => now(),
+                    'updated_at' => now(),
                 ]);
+
+
+                // // 休憩情報を登録
+                // BreakModel::create([
+                //     'attendance_id' => $attendance->id,
+                //     'break_start_time' => '12:00:00',
+                //     'break_end_time' => '13:00:00',
+                //     'created_at' => $date->copy()->setTime(12, 0, 0)->toDateTimeString(),
+                //     'updated_at' => $date->copy()->setTime(13, 0, 0)->toDateTimeString(),
+                // ]);
+
+                // 休憩の日時を作成
+                $breakStartTime = $date->copy()->setTime(12, 0, 0);
+                $breakEndTime = $date->copy()->setTime(13, 0, 0);
 
                 // 休憩情報を登録
                 BreakModel::create([
                     'attendance_id' => $attendance->id,
-                    'break_start_time' => '12:00:00',
-                    'break_end_time' => '13:00:00',
-                    'created_at' => $date->copy()->setTime(12, 0, 0)->toDateTimeString(),
-                    'updated_at' => $date->copy()->setTime(13, 0, 0)->toDateTimeString(),
+                    'break_start_time' => $breakStartTime->toDateTimeString(),
+                    'break_end_time' => $breakEndTime->toDateTimeString(),
+                    'created_at' => now(),
+                    'updated_at' => now(),
                 ]);
             }
         }

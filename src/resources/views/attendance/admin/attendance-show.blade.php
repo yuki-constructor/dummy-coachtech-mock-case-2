@@ -22,6 +22,8 @@
                 {{-- <form action="http://localhost/admin/attendances/31/correct" method="POST"> --}}
                 {{-- <form action="" method="POST"> --}}
                 @csrf
+                <input type="hidden" name="date" value="{{ $attendance->date }}">
+
                 <div class="attendance-table">
 
                     {{-- 名前 --}}

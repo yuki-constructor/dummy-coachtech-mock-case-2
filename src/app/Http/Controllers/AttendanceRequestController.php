@@ -31,24 +31,40 @@ class AttendanceRequestController extends Controller
             ->firstOrFail();
 
         // 修正申請のステータス（「承認待ち」）
-        $pendingStatus = AttendanceRequestStatus::where('request_status', '承認待ち')->firstOrFail();
+        // $pendingStatus = AttendanceRequestStatus::where('request_status', '承認待ち')->firstOrFail();
+
+        // AttendanceRequestStatusモデルでステータスを定数化。attendance_request_statusesテーブルから「承認待ち」のレコードを取得
+        $pendingStatus = AttendanceRequestStatus::where('request_status', AttendanceRequestStatus::STATUS_PENDING_APPROVAL)->first();
+
+        // リクエストの日時を `Y-m-d H:i:s` に変換
+        $date = $attendance->date; // 勤怠の日付を取得
+
+        $startDateTime = \Carbon\Carbon::parse("{$date} {$request->start_time}");
+        $endDateTime = \Carbon\Carbon::parse("{$date} {$request->end_time}");
 
         // 勤怠修正申請を登録
         $attendanceRequest = AttendanceRequest::create([
             'attendance_id' => $attendance->id,
             'attendance_request_status_id' => $pendingStatus->id,
-            'start_time' => $request->start_time,
-            'end_time' => $request->end_time,
+            // 'start_time' => $request->start_time,
+            'start_time' => $startDateTime,
+            // 'end_time' => $request->end_time,
+            'end_time' => $endDateTime,
             'reason' => $request->reason,
         ]);
 
         // 休憩修正申請の登録
         foreach ($request->breaks as $breakId => $break) {
+            $breakStartDateTime = \Carbon\Carbon::parse("{$date} {$break['start']}");
+            $breakEndDateTime = \Carbon\Carbon::parse("{$date} {$break['end']}");
+
             AttendanceRequestBreak::create([
                 'attendance_request_id' => $attendanceRequest->id,
                 'break_id' => $breakId,
-                'break_start_time' => $break['start'],
-                'break_end_time' => $break['end'],
+                // 'break_start_time' => $break['start'],
+                'break_start_time' => $breakStartDateTime,
+                // 'break_end_time' => $break['end'],
+                'break_end_time' => $breakEndDateTime,
             ]);
         };
 
@@ -69,7 +85,7 @@ class AttendanceRequestController extends Controller
         // "承認待ち" のIDを取得
         // $pendingStatus = AttendanceRequestStatus::where('request_status', '承認待ち')->first()->id;
 
-        // AttendanceRequestStatusモデルでステータスを定数化。attendance_request_statusesテーブルから「承認待ち」のレコードを取得
+        // AttendanceRequestStatusモデルでステータスを定数化。attendance_request_statusesテーブルから「承認待ち」のidを取得
         $pendingStatus = AttendanceRequestStatus::where('request_status', AttendanceRequestStatus::STATUS_PENDING_APPROVAL)->first()->id;
 
         // ログイン中の社員の承認待ち申請を取得

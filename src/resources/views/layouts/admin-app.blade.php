@@ -28,7 +28,7 @@
                             </a>
                         </li>
                         <li>
-                            <a class="nav__staff-list">
+                            <a class="nav__staff-list" href="{{ route('admin.attendance.employee-list') }}" method="GET">
                                 スタッフ一覧
                             </a>
                         </li>

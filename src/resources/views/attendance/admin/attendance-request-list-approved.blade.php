@@ -9,7 +9,7 @@
 @section('content')
     <div class="container-wrap">
         <div class="container">
-            <h1>申請一覧</h1>
+            <h1 class="title">申請一覧</h1>
             {{-- メニューバー --}}
             <div class="menu">
                 <div class="menu__link">

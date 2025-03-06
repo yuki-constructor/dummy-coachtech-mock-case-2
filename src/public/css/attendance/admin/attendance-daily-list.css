@@ -23,7 +23,7 @@
     text-align: center;
 }
 
-h1 {
+/* .title {
     font-size: clamp(25px, 2.3vw, 35px);
     border-left: 10px solid #000000;
     padding: 2px 20px;
@@ -31,7 +31,7 @@ h1 {
     background: transparent;
     text-align: left;
     font-family: number;
-}
+} */
 
 .day-navigation {
     display: flex;

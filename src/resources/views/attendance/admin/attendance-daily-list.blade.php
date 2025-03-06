@@ -9,7 +9,7 @@
 @section('content')
     <div class="container-wrap">
         <div class="container">
-            <h1>{{ $date->isoFormat('YYYY年M月D日') }}の勤怠</h1>
+            <h1 class="title">{{ $date->isoFormat('YYYY年M月D日') }}の勤怠</h1>
             <div class="day-navigation">
                 <a href="{{ route('admin.attendance.daily-list', ['date' => $date->copy()->subDay()->toDateString()]) }}">&larr;
                     前日</a>

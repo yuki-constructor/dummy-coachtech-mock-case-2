@@ -9,7 +9,7 @@
 @section('content')
     <div class="container-wrap">
         <div class="container">
-            <h1>スタッフ一覧</h1>
+            <h1 class="title">スタッフ一覧</h1>
             <div class="attendance-table">
                 <div class="table-header">
                     <span class="table-header-name">名前</span>

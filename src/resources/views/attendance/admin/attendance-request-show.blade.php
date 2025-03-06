@@ -9,7 +9,7 @@
 @section('content')
     <div class="container-wrap">
         <div class="container">
-            <h1>勤怠詳細</h1>
+            <h1 class="title">勤怠詳細</h1>
             <form
                 action="{{ route('admin.attendance.request.acknowledge', ['attendanceRequestId' => $attendanceRequest->id]) }}"
                 method="POST">

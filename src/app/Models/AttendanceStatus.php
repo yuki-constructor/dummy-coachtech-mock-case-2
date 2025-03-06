@@ -12,18 +12,24 @@ class AttendanceStatus extends Model
 
     protected $fillable = ['status'];
 
-    // 日本語ステータスを定数定義
+    /**
+     *  日本語ステータスを定数定義
+     */
     public const STATUS_OFF = '勤務外';
     public const STATUS_ON = '勤務中';
     public const STATUS_BREAK = '休憩中';
 
-    // AttendanceStatusは1対多の関係でAttendanceと関連（従業員の勤怠ステータス）
+    /**
+     *  AttendanceStatusは1対多の関係でAttendanceと関連（従業員の勤怠ステータス）
+     */
     public function attendances()
     {
         return $this->hasMany(Attendance::class);
     }
 
-    // 「勤務外」のステータスを取得
+    /**
+     *  「勤務外」のステータスを取得
+     */
     public static function getStatusOff()
     {
         return self::where('status', self::STATUS_OFF)->first();

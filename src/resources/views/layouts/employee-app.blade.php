@@ -23,17 +23,18 @@
                 <nav class="nav">
                     <ul class="nav__ul">
                         <li>
-                            <a class="nav__attendance" href="{{route("employee.attendance.create")}}">
+                            <a class="nav__attendance" href="{{ route('employee.attendance.create') }}">
                                 勤怠
                             </a>
                         </li>
                         <li>
-                            <a class="nav__attendance-list" href="{{route('employee.attendance.list')}}">
+                            <a class="nav__attendance-list" href="{{ route('employee.attendance.list') }}">
                                 勤怠一覧
                             </a>
                         </li>
                         <li>
-                            <a class="nav__application" href="{{route('employee.attendance.request.list.pending')}}">
+                            <a class="nav__application" href="{{ route('employee.attendance.request.list.pending') }}"
+                                method="GET">
                                 申請
                             </a>
                         </li>

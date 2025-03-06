@@ -9,7 +9,7 @@
 @section('content')
     <div class="container-wrap">
         <div class="container">
-            <h1>勤怠詳細</h1>
+            <h1 class="title">勤怠詳細</h1>
 
             {{-- 修正完了メッセージ --}}
             <span class="success-message">

@@ -70,7 +70,7 @@
     grid-column: 2 / 3;
     font-weight: bold;
     text-align: left;
-    padding: 30px 1em;;
+    padding: 30px 1em;
     border-bottom: 1px solid #ccc;
     /* font-family: number; */
 }
@@ -83,8 +83,8 @@
     border-bottom: 1px solid #ccc;
     font-weight: bold;
     font-family: number;
-    padding:0 1em;
-    }
+    padding: 0 1em;
+}
 
 .time {
     grid-column: 2 / 3;
@@ -113,12 +113,12 @@
     border-bottom: 1px solid #ccc;
 }
 
-.reason span{
+.reason span {
     display: flex;
     align-items: center;
     /* justify-content: center; */
     height: 100%;
-    padding:0 1em;
+    padding: 0 1em;
     font-weight: bold;
 }
 
@@ -132,38 +132,11 @@
     margin: 5px 0px;
 }
 
-.edit-button {
+.message {
     display: block;
-    margin: 100px 0;
-    padding: 10px 40px;
-    background-color: black;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
     justify-self: end;
-    font-size: clamp(18px, 1.65vw, 25px);
-    letter-spacing: 3px;
-    font-weight: bold;
-}
-
-.edit-button:hover {
-    background-color: #444;
-}
-
-.approved-button{
-    display: block;
-    margin: 100px 0;
-    padding: 10px 20px;
-    background-color: #666464;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    justify-self: end;
-    font-size: clamp(18px, 1.65vw, 25px);
-    letter-spacing: 3px;
-    font-weight: bold;
+    padding-top: 20px;
+    color: #e65a5a;
 }
 
 /* レスポンシブ対応 */

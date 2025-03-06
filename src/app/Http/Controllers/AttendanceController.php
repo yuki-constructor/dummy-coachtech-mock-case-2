@@ -247,7 +247,7 @@ class AttendanceController extends Controller
     /**
      * 従業員の勤怠詳細画面を表示
      *
-     * @route GET /employee/attendance-show
+     * @route GET /employee/attendance/{attendanceId}
      * @return \Illuminate\View\View
      */
     public function attendanceShow($attendanceId)
@@ -325,7 +325,7 @@ class AttendanceController extends Controller
     /**
      * 勤怠詳細画面（管理者）を表示
      *
-     * @route GET /admin/attendances/{attendanceId}/show
+     * @route GET /admin/attendance/{attendanceId}/show
      * @return \Illuminate\View\View
      */
     public function adminAttendanceShow($attendanceId)
@@ -339,7 +339,7 @@ class AttendanceController extends Controller
     /**
      * 勤怠情報の更新処理（管理者）
      *
-     * @route POST /admin/attendances/{attendanceId}/correct
+     * @route POST /admin/attendance/{attendanceId}/correct
      * @return \Illuminate\Http\RedirectResponse
      */
     // public function adminAttendanceCorrect(AttendanceRequestRequest $request, $attendanceId)
@@ -377,7 +377,7 @@ class AttendanceController extends Controller
             }
         }
 
-        return redirect()->route('admin.attendances.show', $attendanceId)->with('success', $attendance->employee->name . 'さんの勤怠情報を修正しました。');
+        return redirect()->route('admin.attendance.show', $attendanceId)->with('success', $attendance->employee->name . 'さんの勤怠情報を修正しました。');
     }
 
     /**

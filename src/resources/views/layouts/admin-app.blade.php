@@ -23,17 +23,20 @@
                 <nav class="nav">
                     <ul class="nav__ul">
                         <li>
-                            <a class="nav__attendance-list" href="{{ route('admin.attendance.daily-list') }}" method="GET">
+                            <a class="nav__attendance-list" href="{{ route('admin.attendance.daily-list') }}"
+                                method="GET">
                                 勤怠一覧
                             </a>
                         </li>
                         <li>
-                            <a class="nav__staff-list" href="{{ route('admin.attendance.employee-list') }}" method="GET">
+                            <a class="nav__staff-list" href="{{ route('admin.attendance.employee-list') }}"
+                                method="GET">
                                 スタッフ一覧
                             </a>
                         </li>
                         <li>
-                            <a class="nav__application-list">
+                            <a class="nav__application-list" href="{{ route('admin.attendance.request.list.pending') }}"
+                                method="GET">
                                 申請一覧
                             </a>
                         </li>

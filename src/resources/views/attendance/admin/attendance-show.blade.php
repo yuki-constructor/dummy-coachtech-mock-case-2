@@ -1,6 +1,6 @@
 @extends('layouts.admin-app')
 
-@section('title', '勤怠詳細画面（従業員）')
+@section('title', '勤怠詳細画面（管理者）')
 
 @push('styles')
     <link rel="stylesheet" href="{{ asset('css/attendance/admin/attendance-show.css') }}">
@@ -18,7 +18,7 @@
                 @endif
             </span>
 
-            <form action="{{ route('admin.attendances.correct', ['attendanceId' => $attendance->id]) }}" method="POST">
+            <form action="{{ route('admin.attendance.correct', ['attendanceId' => $attendance->id]) }}" method="POST">
                 {{-- <form action="http://localhost/admin/attendances/31/correct" method="POST"> --}}
                 {{-- <form action="" method="POST"> --}}
                 @csrf
@@ -29,7 +29,7 @@
                     {{-- 名前 --}}
                     <div class="table-row">
                         <span class="label">名前</span>
-                        <span class="value">{{ $attendance->employee->name }}</span>
+                        <span class="name">{{ $attendance->employee->name }}</span>
                         <span class="error-message"></span>
                     </div>
 

@@ -321,7 +321,7 @@ class AttendanceController extends Controller
             }
         }
 
-        return redirect()->route('admin.attendances.show', $attendanceId)->with('success', $attendance->employee->name . 'さんの勤怠情報を修正しました。');
+        return redirect()->route('admin.attendance.show', $attendanceId)->with('success', $attendance->employee->name . 'さんの勤怠情報を修正しました。');
     }
 
     /**

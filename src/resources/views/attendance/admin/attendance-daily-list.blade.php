@@ -76,7 +76,7 @@
                         <span>{{ $attendance->total_work_time }}</span>
 
                         {{-- 詳細画面へのリンク --}}
-                        <a href="{{ route('admin.attendances.show', ['attendanceId' => $attendance->id]) }}">詳細</a>
+                        <a href="{{ route('admin.attendance.show', ['attendanceId' => $attendance->id]) }}">詳細</a>
                     </div>
                 @endforeach
 

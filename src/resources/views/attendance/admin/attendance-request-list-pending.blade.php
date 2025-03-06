@@ -1,9 +1,9 @@
-@extends('layouts.employee-app')
+@extends('layouts.admin-app')
 
-@section('title', '勤怠修正申請一覧画面（従業員）')
+@section('title', '勤怠修正申請一覧画面（管理者）')
 
 @push('styles')
-    <link rel="stylesheet" href="{{ asset('css/attendance/employee/attendance-request-list-pending.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/attendance/admin/attendance-request-list-pending.css') }}">
 @endpush
 
 @section('content')
@@ -14,7 +14,7 @@
             <div class="menu">
                 <div class="menu__link">
                     <a href="" class="menu__link-left">承認待ち</a>
-                    <a href="#" class="menu__link-right">承認済み</a>
+                    <a href="{{route('admin.attendance.request.list.approved')}}" class="menu__link-right">承認済み</a>
                 </div>
             </div>
             {{-- 申請一覧 --}}
@@ -40,18 +40,19 @@
 
                 @foreach ($attendanceRequests as $request)
                     <div class="table-row">
-                         {{-- 承認待ち/承認済み  --}}
+                        {{-- 承認待ち/承認済み --}}
                         <span>{{ $request->attendanceRequestStatus->request_status }}</span>
-                        {{-- ログイン中の従業員の名前  --}}
-                        <span>{{ $employee->name }}</span>
-                         {{-- 勤怠日 --}}
+                        {{-- 従業員の名前 --}}
+                        <span>{{ $request->attendance->employee->name }}</span>
+                        {{-- 勤怠日 --}}
                         <span>{{ \Carbon\Carbon::parse($request->attendance->date)->format('Y/m/d') }}</span>
-                         {{-- 申請理由 --}}
+                        {{-- 申請理由 --}}
                         <span>{{ $request->reason }}</span>
-                         {{-- 申請日時 --}}
+                        {{-- 申請日時 --}}
                         <span>{{ \Carbon\Carbon::parse($request->created_at)->format('Y/m/d') }}</span>
-                        {{-- 勤怠詳細画面へのリンク --}}
-                        <a href="#">詳細</a>
+                        {{-- 修正申請承認画面へのリンク --}}
+                        <a
+                            href="{{ route('admin.attendance.request.show', ['attendanceRequestId' => $request->id]) }}">詳細</a>
                     </div>
                 @endforeach
 

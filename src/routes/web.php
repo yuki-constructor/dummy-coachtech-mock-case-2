@@ -180,14 +180,13 @@ Route::prefix('admin')->group(function () {
         //  */
         // Route::get('/attendance-list', [AdminController::class, 'attendanceList'])
         //     ->name('attendance.list');
-    });
 
-    /**
-     * ==============================
-     * 管理者ユーザーの勤怠管理関連
-     * ==============================
-     */
-    Route::middleware('auth:admin')->group(function () {
+        /**
+         * ==============================
+         * 管理者ユーザーの勤怠管理関連
+         * ==============================
+         */
+
         /**
          *  日次勤怠一覧画面（管理者用）を表示（認証必須）
          */
@@ -217,6 +216,12 @@ Route::prefix('admin')->group(function () {
          */
         Route::get('/attendance/monthly-list/{employeeId}', [AttendanceController::class, 'attendanceMonthlyList'])
             ->name('admin.attendance.monthly-list');
+
+        /**
+         *  CSV出力
+         */
+        Route::get('/attendance/monthly-list/{employeeId}/export-csv', [AttendanceController::class, 'exportCsv'])
+            ->name('admin.attendance.monthly-list.export-csv');
 
         /**
          *  従業員の勤怠修正申請一覧画面（承認待ち）（管理者用）を表示（認証必須）

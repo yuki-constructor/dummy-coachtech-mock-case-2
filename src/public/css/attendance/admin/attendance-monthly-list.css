@@ -118,6 +118,24 @@
     text-decoration: underline;
 }
 
+.csv-button {
+    display: block;
+    margin: 100px 0;
+    padding: 10px 40px;
+    background-color: black;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    justify-self: end;
+    font-size: clamp(18px, 1.65vw, 25px);
+    text-decoration: none;
+}
+
+.csv-button:hover {
+    background-color: #444;
+}
+
 /* レスポンシブ対応 */
 
 /* タブレット: 768px～850px */

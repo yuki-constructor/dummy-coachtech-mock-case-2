@@ -97,6 +97,10 @@
                 @endforeach
 
             </div>
+            <a href="{{ route('admin.attendance.monthly-list.export-csv', ['employeeId' => $employee->id, 'month' => $month]) }}"
+                class="csv-button">
+                 CSV出力
+             </a>
         </div>
     </div>
 @endsection
